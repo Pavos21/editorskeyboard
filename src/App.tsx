@@ -249,7 +249,7 @@ function App() {
                 const parsed = JSON.parse(finalJsonString);
                 setEditableJson(JSON.stringify(parsed, null, 2));
                 setConfig(parsed); // Save parsed JSON
-                setMessage('JSON loaded successfully');
+                setMessage('Data loaded successfully');
                 return; // Exit after successful load
               } catch (parseError) {
                 setMessage(`Failed to parse JSON from device. Error: ${(parseError as Error).message}`);
@@ -300,7 +300,7 @@ function App() {
           // Disconnect as soon as the device is ready to reboot
           if (response.includes('ready-to-reboot')) {
             await serialHandler.close();
-            response += '\n(Port closed, device rebooting)';
+            //response += '\n(Port closed, device rebooting)';
             setConnected(false);
             setEditableJson('');
             setConfig(null);
@@ -315,7 +315,8 @@ function App() {
         await serialHandler.close();
       }
 
-      setMessage('Upload response:\n' + response);
+      //setMessage('Upload response:\n' + response);
+      setMessage('Upload successful. Device rebooted');
     } catch (e) {
       setMessage(`Upload failed: ${(e as Error).message}`);
     }
