@@ -17,14 +17,14 @@ import KeysEditorDialog from './components/KeysEditorDialog'; // Assuming this p
 //   { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v2.u2f` },
 // ];
 const firmwareFiles = [
-  { name: 'b_v1.u2f', param: 'b_v1', url: 'firmware/b_v1.u2f' },
-  { name: 'b_v2.u2f', param: 'b_v2', url: 'firmware/b_v2.u2f' },
-  { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: 'firmware/b_oled_v1.u2f' },
-  { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: 'firmware/b_oled_v2.u2f' },
-  { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: 'firmware/b_bt_v1.u2f' },
-  { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: 'firmware/b_bt_v2.u2f' },
-  { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: 'firmware/b_bt_oled_v1.u2f' },
-  { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: 'firmware/b_bt_oled_v2.u2f' },
+  { name: 'b_v1.u2f', param: 'b_v1', url: '/firmware/b_v1.u2f' },
+  { name: 'b_v2.u2f', param: 'b_v2', url: '/firmware/b_v2.u2f' },
+  { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: '/firmware/b_oled_v1.u2f' },
+  { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: '/firmware/b_oled_v2.u2f' },
+  { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: '/firmware/b_bt_v1.u2f' },
+  { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: '/firmware/b_bt_v2.u2f' },
+  { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: '/firmware/b_bt_oled_v1.u2f' },
+  { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: '/firmware/b_bt_oled_v2.u2f' },
 ];
 
 // Custom Confirmation Dialog Component
