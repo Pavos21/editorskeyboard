@@ -432,12 +432,13 @@ function App() {
           <div className="fixed inset-0 bg-[#333333DD] z-40 pointer-events-auto"></div>
         </>
       )}
-      <div className="flex h-screen bg-gray-900 text-gray-100">
-        {/* LEFT PANEL */}
-        <div className="flex-none bg-gray-800 h-screen flex items-start">
+      {/* Main container: flex-col on mobile, md:flex-row on desktop */}
+      <div className="flex flex-col md:flex-row min-h-screen bg-gray-900 text-gray-100 overflow-y-auto">
+        {/* LEFT PANEL: Takes full width on mobile, 30vh height. On desktop, flex-none and full height. */}
+        <div className="flex-none bg-gray-800 h-auto w-screen md:h-screen md:w-auto flex items-start">
           {/* KeyboardSVG is left-aligned, full screen height */}
           <KeyboardSVG
-            className="h-full w-auto"
+            className="h-full w-auto mx-auto" /* Added mx-auto for horizontal centering on mobile */
             // When a key is clicked, open the dialog in the correct mode based on the ID
             onKeyClick={(id) => {
               if (id === 'encoder') {
@@ -455,13 +456,13 @@ function App() {
           />
         </div>
 
-        {/* RIGHT: JSON Editor & Controls */}
-        <div className="flex-1 p-8 overflow-y-auto bg-gray-900">
+        {/* RIGHT: JSON Editor & Controls: Takes remaining height on mobile, flex-1 on desktop */}
+        <div className="flex-1 p-8 bg-gray-900">
           <h1 className="text-4xl font-extrabold mb-8 text-indigo-400">
             Editor's Keyboard editor
           </h1>
 
-          <div className="flex space-x-4 mb-8">
+          <div className="flex flex-wrap gap-4 mb-8"> {/* Changed to flex-wrap and gap for better mobile button layout */}
             {!connected ? (
               <button
                 onClick={connect}
@@ -506,11 +507,11 @@ function App() {
             <h2 className="text-2xl font-semibold mb-3 text-gray-200">
               Firmware Download
             </h2>
-            <div className="flex space-x-4 items-center">
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 items-center"> {/* Adjusted for mobile stacking */}
               <select
                 value={selectedFirmware}
                 onChange={handleFirmwareChange}
-                className="flex-grow p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-grow w-full sm:w-auto p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
                 {firmwareFiles.map((file) => (
                   <option key={file.name} value={file.name}>
@@ -520,7 +521,7 @@ function App() {
               </select>
               <button
                 onClick={handleFirmwareDownload}
-                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 w-full sm:w-auto" /* Full width on mobile */
               >
                 Download
               </button>
@@ -532,11 +533,11 @@ function App() {
               <hr className="border-t border-gray-700 my-8" />
               <h2 className="text-xl font-bold text-yellow-400 mb-4">Advanced</h2>
               <div className="mb-8">
-                <h3 className="text-2xl font-semibold mb-3 text-gray-200 flex items-center justify-between">
+                <h3 className="text-2xl font-semibold mb-3 text-gray-200 flex flex-col sm:flex-row items-start sm:items-center justify-between"> {/* Adjusted for mobile stacking */}
                   Edit Raw Configuration
                   <button
                     onClick={() => setShowJsonEditor(!showJsonEditor)}
-                    className="ml-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
+                    className="mt-2 sm:mt-0 ml-0 sm:ml-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out w-full sm:w-auto" /* Full width on mobile */
                   >
                     {showJsonEditor ? 'Hide Editor' : 'Show Editor'}
                   </button>
