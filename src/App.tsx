@@ -361,6 +361,8 @@ function App() {
       link.click();
       document.body.removeChild(link);
       setMessage(`Downloading ${selectedFile.name}...`);
+      console.log(`Downloading firmware: ${selectedFile.name} from ${selectedFile.url}`);
+      console.log(`File path: ${link}`);
     } else {
       setMessage('Please select a firmware file to download.');
     }
