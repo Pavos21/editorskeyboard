@@ -6,15 +6,25 @@ import KeysEditorDialog from './components/KeysEditorDialog'; // Assuming this p
 // Define available firmware files and their mapping to URL parameters
 // Added a 'url' property to simulate the public path where these files would be served.
 // In a real application, you'd place these .u2f files in your public/firmware directory.
+// const firmwareFiles = [
+//   { name: 'b_v1.u2f', param: 'b_v1', url: `${import.meta.env.BASE_URL}firmware/b_v1.u2f` },
+//   { name: 'b_v2.u2f', param: 'b_v2', url: `${import.meta.env.BASE_URL}firmware/b_v2.u2f` },
+//   { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: `${import.meta.env.BASE_URL}firmware/b_oled_v1.u2f` },
+//   { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_oled_v2.u2f` },
+//   { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: `${import.meta.env.BASE_URL}firmware/b_bt_v1.u2f` },
+//   { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_v2.u2f` },
+//   { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v1.u2f` },
+//   { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v2.u2f` },
+// ];
 const firmwareFiles = [
-  { name: 'b_v1.u2f', param: 'b_v1', url: `${import.meta.env.BASE_URL}firmware/b_v1.u2f` },
-  { name: 'b_v2.u2f', param: 'b_v2', url: `${import.meta.env.BASE_URL}firmware/b_v2.u2f` },
-  { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: `${import.meta.env.BASE_URL}firmware/b_oled_v1.u2f` },
-  { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_oled_v2.u2f` },
-  { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: `${import.meta.env.BASE_URL}firmware/b_bt_v1.u2f` },
-  { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_v2.u2f` },
-  { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v1.u2f` },
-  { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v2.u2f` },
+  { name: 'b_v1.u2f', param: 'b_v1', url: 'firmware/b_v1.u2f' },
+  { name: 'b_v2.u2f', param: 'b_v2', url: 'firmware/b_v2.u2f' },
+  { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: 'firmware/b_oled_v1.u2f' },
+  { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: 'firmware/b_oled_v2.u2f' },
+  { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: 'firmware/b_bt_v1.u2f' },
+  { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: 'firmware/b_bt_v2.u2f' },
+  { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: 'firmware/b_bt_oled_v1.u2f' },
+  { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: 'firmware/b_bt_oled_v2.u2f' },
 ];
 
 // Custom Confirmation Dialog Component
@@ -55,7 +65,7 @@ function App() {
   const [editableJson, setEditableJson] = useState('');
   const [message, setMessage] = useState('');
   const [showOled, setShowOled] = useState(false);
-  const [selectedFirmware, setSelectedFirmware] = useState<string>(''); // New state for selected firmware
+  const [selectedFirmware, setSelectedFirmware] = useState<string>('');
 
   // New state to control the visibility of the JSON editor textarea
   const [showJsonEditor, setShowJsonEditor] = useState(false);
