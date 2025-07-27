@@ -291,7 +291,7 @@ function KeysEditorDialog({
         transformAndClean(downCombo),
         downLabel
       );
-    } else if (onSaveConfigDisplay) {
+    } else if (isConfigMode || isDisplayMode) { // Changed this line
       // Determine the current config and display values based on the active mode
       const currentConfig = {
         os: isConfigMode ? configOs : (initialConfigOs || osOptions[0]),
@@ -303,7 +303,7 @@ function KeysEditorDialog({
         timeout: isDisplayMode ? displayTimeoutSeconds * 1000 : (initialDisplayTimeout || 0),
       };
 
-      onSaveConfigDisplay(currentConfig, currentDisplay);
+      onSaveConfigDisplay?.(currentConfig, currentDisplay); // Added optional chaining
     } else if (onSave) {
       onSave(transformAndClean(combo), label);
     }
