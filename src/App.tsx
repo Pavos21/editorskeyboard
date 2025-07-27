@@ -1,31 +1,8 @@
 import { useState, useEffect } from 'react';
-import { serialHandler } from './components/serialHandler'; // Assuming this path is correct
-import KeyboardSVG from './assets/KeyboardSVG'; // Assuming this path is correct
-import KeysEditorDialog from './components/KeysEditorDialog'; // Assuming this path is correct
-
-// Define available firmware files and their mapping to URL parameters
-// Added a 'url' property to simulate the public path where these files would be served.
-// In a real application, you'd place these .u2f files in your public/firmware directory.
-// const firmwareFiles = [
-//   { name: 'b_v1.u2f', param: 'b_v1', url: `${import.meta.env.BASE_URL}firmware/b_v1.u2f` },
-//   { name: 'b_v2.u2f', param: 'b_v2', url: `${import.meta.env.BASE_URL}firmware/b_v2.u2f` },
-//   { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: `${import.meta.env.BASE_URL}firmware/b_oled_v1.u2f` },
-//   { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_oled_v2.u2f` },
-//   { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: `${import.meta.env.BASE_URL}firmware/b_bt_v1.u2f` },
-//   { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_v2.u2f` },
-//   { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v1.u2f` },
-//   { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: `${import.meta.env.BASE_URL}firmware/b_bt_oled_v2.u2f` },
-// ];
-const firmwareFiles = [
-  { name: 'b_v1.u2f', param: 'b_v1', url: '/firmware/b_v1.u2f' },
-  { name: 'b_v2.u2f', param: 'b_v2', url: '/firmware/b_v2.u2f' },
-  { name: 'b_oled_v1.u2f', param: 'b_oled_v1', url: '/firmware/b_oled_v1.u2f' },
-  { name: 'b_oled_v2.u2f', param: 'b_oled_v2', url: '/firmware/b_oled_v2.u2f' },
-  { name: 'b_bt_v1.u2f', param: 'b_bt_v1', url: '/firmware/b_bt_v1.u2f' },
-  { name: 'b_bt_v2.u2f', param: 'b_bt_v2', url: '/firmware/b_bt_v2.u2f' },
-  { name: 'b_bt_oled_v1.u2f', param: 'b_bt_oled_v1', url: '/firmware/b_bt_oled_v1.u2f' },
-  { name: 'b_bt_oled_v2.u2f', param: 'b_bt_oled_v2', url: '/firmware/b_bt_oled_v2.u2f' },
-];
+import { serialHandler } from './components/serialHandler';
+import KeyboardSVG from './assets/KeyboardSVG';
+import KeysEditorDialog from './components/KeysEditorDialog';
+import { documents } from './data/files';
 
 // Custom Confirmation Dialog Component
 interface ConfirmationDialogProps {
@@ -128,7 +105,7 @@ function App() {
     setShowOled(oledDetected);
 
     // Check for firmware pre-selection parameters
-    for (const file of firmwareFiles) {
+    for (const file of documents) {
       if (params.has(file.param)) {
         setSelectedFirmware(file.name);
         firmwarePreselected = true;
@@ -137,8 +114,8 @@ function App() {
     }
 
     // Set a default firmware if none is pre-selected and there are files available
-    if (!firmwarePreselected && firmwareFiles.length > 0) {
-      setSelectedFirmware(firmwareFiles[0].name);
+    if (!firmwarePreselected && documents.length > 0) {
+      setSelectedFirmware(documents[0].name);
     }
 
     setMessage('Ready');
@@ -375,7 +352,7 @@ function App() {
 
   // Handle firmware download
   const handleFirmwareDownload = () => {
-    const selectedFile = firmwareFiles.find(file => file.name === selectedFirmware);
+    const selectedFile = documents.find(file => file.name === selectedFirmware);
     if (selectedFile) {
       const link = document.createElement('a');
       link.href = selectedFile.url; // Use the URL from the object
@@ -512,7 +489,7 @@ function App() {
                 onChange={handleFirmwareChange}
                 className="flex-grow w-full sm:w-auto p-3 bg-gray-700 border border-gray-600 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               >
-                {firmwareFiles.map((file) => (
+                {documents.map((file) => (
                   <option key={file.name} value={file.name}>
                     {file.name}
                   </option>
