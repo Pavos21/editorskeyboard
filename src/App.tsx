@@ -228,68 +228,56 @@ function App() {
 
   // Load data from the connected device
   const loadData = async () => {
-    if (editableJson) {
-      setConfirmationMessage('This will overwrite your current edits. Are you sure you want to load data from the device?');
-      setOnConfirmAction(() => async () => {
-        setShowConfirmationDialog(false);
-        try {
-          await serialHandler.write('get\n');
-          let result = '';
-          setMessage('Receiving data...');
-
-          for (let i = 0; i < 20; i++) {
-            const chunk = await serialHandler.read();
-            if (!chunk) break;
-
-            console.log('Serial chunk:', chunk);
-            result += chunk;
-
-            try {
-              const parsed = JSON.parse(result);
-              setEditableJson(JSON.stringify(parsed, null, 2));
-              setConfig(parsed); // Save parsed JSON
-              setMessage('JSON loaded successfully');
-              return;
-            } catch {
-              setMessage('Receiving data...');
-            }
-          }
-
-          setMessage('Failed to parse JSON from device response');
-        } catch (e) {
-          setMessage(`Load data failed: ${(e as Error).message}`);
-        }
-      });
-      setShowConfirmationDialog(true);
-    } else {
-      // If no edits, proceed directly
+    const performLoad = async () => {
       try {
         await serialHandler.write('get\n');
         let result = '';
         setMessage('Receiving data...');
+        const startTime = Date.now();
 
-        for (let i = 0; i < 20; i++) {
+        // Loop with a timeout to wait for the complete data
+        while (Date.now() - startTime < 10000) { // 10-second timeout
           const chunk = await serialHandler.read();
-          if (!chunk) break;
+          if (chunk) {
+            result += chunk;
+            console.log('Serial chunk:', chunk);
 
-          console.log('Serial chunk:', chunk);
-          result += chunk;
-
-          try {
-            const parsed = JSON.parse(result);
-            setEditableJson(JSON.stringify(parsed, null, 2));
-            setConfig(parsed); // Save parsed JSON
-            setMessage('JSON loaded successfully');
-            return;
-          } catch {
-            setMessage('Receiving data...');
+            // Check if the end marker has been received
+            if (result.includes('end-json')) {
+              const finalJsonString = result.replace('end-json', '').trim();
+              try {
+                const parsed = JSON.parse(finalJsonString);
+                setEditableJson(JSON.stringify(parsed, null, 2));
+                setConfig(parsed); // Save parsed JSON
+                setMessage('JSON loaded successfully');
+                return; // Exit after successful load
+              } catch (parseError) {
+                setMessage(`Failed to parse JSON from device. Error: ${(parseError as Error).message}`);
+                console.error("Raw data received before parsing failed:", finalJsonString);
+                return; // Exit after parsing failure
+              }
+            }
           }
+          // If no chunk, we just continue waiting for more data until the timeout
         }
 
-        setMessage('Failed to parse JSON from device response');
+        // If the loop times out
+        setMessage('Failed to load data: Timed out waiting for response from device.');
       } catch (e) {
         setMessage(`Load data failed: ${(e as Error).message}`);
       }
+    };
+
+    if (editableJson) {
+      setConfirmationMessage('This will overwrite your current edits. Are you sure you want to load data from the device?');
+      setOnConfirmAction(() => async () => {
+        setShowConfirmationDialog(false);
+        await performLoad();
+      });
+      setShowConfirmationDialog(true);
+    } else {
+      // If no edits, proceed directly
+      await performLoad();
     }
   };
 
