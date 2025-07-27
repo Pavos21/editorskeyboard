@@ -6,4 +6,5 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/editorskeyboard/', // for GitHub Pages deployment
+  publicDir: 'public', // for GitHub Pages deployment
 });

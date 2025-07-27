@@ -43,6 +43,10 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # DEBUG: Vypsání obsahu složky dist (pro ověření firmware/)
+      - name: Debug dist folder
+        run: ls -R dist
+
       # Krok 5: Nasazení na GitHub Pages
       # Používá akci 'peaceiris/actions-gh-pages' pro nasazení obsahu složky 'dist'
       # na větev 'gh-pages' vašeho repozitáře
