@@ -1,0 +1,61 @@
+# Název pracovního postupu, který se zobrazí na GitHubu
+name: Deploy to GitHub Pages
+
+# Kdy se má tento pracovní postup spustit
+on:
+  push:
+    # Spustí se, když dojde k push do větve 'main'
+    branches:
+      - main
+    # NEBO, pokud používáte 'master' větev:
+    # - master
+
+# Definice úloh (jobs)
+jobs:
+  build-and-deploy:
+    # Název úlohy
+    name: Build and Deploy
+    # Operační systém, na kterém se úloha spustí
+    runs-on: ubuntu-latest
+
+    # Kroky (steps) úlohy
+    steps:
+      # Krok 1: Checkout kódu repozitáře
+      # Stáhne kód z repozitáře, aby s ním workflow mohlo pracovat
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Krok 2: Nastavení Node.js prostředí
+      # Konfiguruje Node.js s určenou verzí
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Použijte verzi Node.js, kterou používáte ve svém projektu
+
+      # Krok 3: Instalace závislostí
+      # Spustí 'npm install' pro instalaci všech závislostí projektu
+      - name: Install dependencies
+        run: npm install
+
+      # Krok 4: Sestavení projektu
+      # Spustí skript 'build' definovaný ve vašem package.json (npm run build)
+      # Tím se vytvoří optimalizovaná verze aplikace do složky 'dist'
+      - name: Build project
+        run: npm run build
+
+      # Krok 5: Nasazení na GitHub Pages
+      # Používá akci 'peaceiris/actions-gh-pages' pro nasazení obsahu složky 'dist'
+      # na větev 'gh-pages' vašeho repozitáře
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4 # Používáme v4 pro nejnovější funkce
+        with:
+          # Token pro autentizaci s GitHubem. GITHUB_TOKEN je automaticky dostupný.
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Adresář, který se má nasadit (výstupní adresář Vite)
+          publish_dir: ./dist
+          # Název větve, na kterou se má nasadit (výchozí pro GitHub Pages)
+          publish_branch: gh-pages
+          # Zpráva commitu pro nasazení
+          commit_message: ${{ github.event.head_commit.message }} # Použije zprávu posledního commitu
+          # Volitelné: Zabrání vytvoření prázdného commitu, pokud nedošlo ke změnám
+          force_orphan: true
